@@ -1,9 +1,19 @@
+'usec client'
 import React, { useState, useRef } from 'react';
 import { Upload, FileVideo, Mail, User, Zap, Check, ArrowRight, Play } from 'lucide-react';
 
 const UGCProcessingSystem = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    contentType: string;
+    videoCount: string;
+    files: File[];
+    orderNumber: string;
+    style: string;
+    requirements: string;
+  }>({
     name: '',
     email: '',
     contentType: '',
@@ -15,7 +25,7 @@ const UGCProcessingSystem = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const steps = [
     { title: 'Basic Info', icon: User },
@@ -24,7 +34,9 @@ const UGCProcessingSystem = () => {
     { title: 'Processing', icon: Zap }
   ];
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -32,20 +44,20 @@ const UGCProcessingSystem = () => {
     }));
   };
 
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
     setFormData(prev => ({
       ...prev,
       files: [...prev.files, ...files]
     }));
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     const files = Array.from(e.dataTransfer.files);
@@ -78,7 +90,7 @@ const UGCProcessingSystem = () => {
           formDataToSend.append('files', file);
         });
       } else {
-        formDataToSend.append(key, formData[key]);
+        formDataToSend.append(key, formData[key as keyof typeof formData] as any);
       }
     });
 
@@ -105,7 +117,7 @@ const UGCProcessingSystem = () => {
     }
   };
 
-  const removeFile = (index) => {
+  const removeFile = (index: number) => {
     setFormData(prev => ({
       ...prev,
       files: prev.files.filter((_, i) => i !== index)
@@ -280,7 +292,7 @@ const UGCProcessingSystem = () => {
                   name="requirements"
                   value={formData.requirements}
                   onChange={handleInputChange}
-                  rows="4"
+                  rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Any specific requirements, brand colors, logos, or instructions..."
                 />
