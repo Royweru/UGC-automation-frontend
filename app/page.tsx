@@ -1,4 +1,4 @@
-'usec client'
+'use client'
 import React, { useState, useRef } from 'react';
 import { Upload, FileVideo, Mail, User, Zap, Check, ArrowRight, Play } from 'lucide-react';
 
@@ -82,7 +82,6 @@ const UGCProcessingSystem = () => {
   const submitForm = async () => {
     setIsSubmitting(true);
     
-    // Simulate API call to Django backend
     const formDataToSend = new FormData();
     Object.keys(formData).forEach(key => {
       if (key === 'files') {
@@ -128,8 +127,14 @@ const UGCProcessingSystem = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center text-white mb-12">
-          <h1 className="text-5xl font-bold mb-4">CreatorClips</h1>
+        <div className="text-center flex flex-col space-y-4 text-white mb-12">
+          <div className=' flex items-center justify-center space-x-2'>
+            <img src="/logo.png" alt="" className=' size-32 bg-center bg-cover' />
+            <h1 className=' text-5xl font-bold'>
+            VibeCheckr
+            </h1>
+          </div>
+          
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
             Transform your raw content into professional UGC that converts. 
             AI-powered enhancement in minutes, not hours.
